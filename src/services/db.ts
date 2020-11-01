@@ -12,11 +12,13 @@ export const openConnection = () => {
   return db;
 };
 
+//Retorna somente o primeiro registro
 export const dbQueryPrimeiro = async (query: string, parametros?: any[]) => {
   const retorno = await dbQuery(query, parametros);
   return retorno[0];
 };
 
+//Encapsular e executar a query
 export const dbQuery = (query: string, parametros?: any[]) => {
   let db = openConnection();
   //cria uma promise para resolver se a conexão foi bem sucedida

@@ -28,5 +28,13 @@
     "tdsoft"
   ],
   "author": "Geovanna Santiago",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kurv12/APIFullRest.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kurv12/APIFullRest/issues"
+  },
+  "homepage": "https://github.com/kurv12/APIFullRest#readme"
 }

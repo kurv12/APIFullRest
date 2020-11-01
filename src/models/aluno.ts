@@ -5,7 +5,7 @@ export type Alunos = {
   nome: string;
   curso: string;
   situacao: string;
-  registrado_em: string;
+  registrado_em: String;
 };
 
 const insereAluno = async (aluno: Alunos) => {
@@ -14,10 +14,10 @@ const insereAluno = async (aluno: Alunos) => {
     `INSERT INTO alunos (rga, nome, curso, situacao, registrado_em) VALUES (?,?,?,?,?)`,
     [aluno.rga, aluno.nome, aluno.curso, aluno.situacao, aluno.registrado_em]
   );
-  /*let retorno = await dbQuery(
-    `SELECT seq AS id FROM sqlite_sequence WHERE name = 'aluno'`
-  );*/
-  return console.log("Inserido com sucesso");
+  let retorno = await dbQuery(
+    `SELECT seq AS Id FROM sqlite_sequence WHERE name = 'alunos'`
+  );
+  return getAluno(retorno[0].Id);
 };
 
 const listaAlunos = async () => {

@@ -1,16 +1,19 @@
 import { Request, Response } from "express";
 import {
+  accessDenied,
   badRequest,
   internalServerError,
   notFound,
+  okPost,
   validateNumber,
 } from "../services/util";
-import { alunoModel, Alunos } from "../models/alunos_model";
+import { alunoModel, Alunos } from "../models/aluno";
 import { ok } from "assert";
 
 const insereAlunos = (req: Request, res: Response) => {
   {
     const aluno = req.body;
+    //Valida os valores recebidos
     if (!aluno) return badRequest(res, "Aluno inválido");
 
     if (!aluno.rga) return badRequest(res, "Informe o RGA");
@@ -21,47 +24,55 @@ const insereAlunos = (req: Request, res: Response) => {
   const insereAluno = req.body as Alunos;
   return alunoModel
     .insereAluno(insereAluno)
-    .then((alunos_model) => {
+    .then((alunos) => {
+      okPost(res);
       res.json({
-        alunos_model,
+        alunos,
       });
     })
     .catch((err) => internalServerError(res, err));
 };
 
-const listaAlunos = (req: Request, res: Response) => {
+//Lista todos os alunos do banco de dados
+const listaAlunos = (_req: Request, res: Response) => {
   alunoModel
     .listaAlunos()
-    .then((alunos_model) => {
-      res.json(alunos_model);
+    .then((alunos) => {
+      res.json(alunos);
     })
     .catch((err) => internalServerError(res, err));
 };
 
-/*const getAluno = (req: Request, res: Response) => {
+//Retorna um aluno específico
+const getAluno = (req: Request, res: Response) => {
   const id = parseInt(req.params.id);
   {
     if (!validateNumber(id)) {
-      return badRequest(res, "id inválido");
+      return notFound(res, "Id inválido");
     }
   }
   return alunoModel
     .getAluno(id)
-    .then((alunos_model) => {
-      if (alunos_model) return res.json(alunos_model);
-      else return notFound(res);
+    .then((aluno) => {
+      if (aluno) {
+        ok(res);
+        return res.json(aluno);
+      } else {
+        return notFound(res, "Usuário não existe!");
+      }
     })
     .catch((err) => internalServerError(res, err));
-};*/
+};
 
+//Deleta um aluno
 const deletaAluno = async (req: Request, res: Response) => {
   const id = parseInt(req.params.id);
   {
     if (!validateNumber(id)) {
-      return badRequest(res, "id inválido");
+      return notFound(res, "id inválido");
     }
     const alunoExistente = await alunoModel.getAluno(id);
-    if (!alunoExistente) return notFound(res);
+    if (!alunoExistente) return notFound(res, "Usuário não existe!");
   }
   return alunoModel
     .deletaAluno(id)
@@ -75,7 +86,7 @@ const atualizaAluno = async (req: Request, res: Response) => {
   const id = parseInt(req.params.id);
   {
     if (!validateNumber(id)) {
-      return badRequest(res, "id inválido");
+      return notFound(res, "id inválido");
     }
     const aluno = req.body;
     if (!aluno) return badRequest(res, "Aluno inválido");
@@ -85,24 +96,40 @@ const atualizaAluno = async (req: Request, res: Response) => {
     if (!aluno.nome) return badRequest(res, "Informe o nome");
 
     const alunoExistente = await alunoModel.getAluno(id);
-    if (!alunoExistente) return notFound(res);
+    if (!alunoExistente) return notFound(res, "Usuário não existe!");
   }
 
   const atualizaAluno = req.body as Alunos;
+  //retorna o aluno com promisse
   return alunoModel
     .atualizaAluno(atualizaAluno, id)
-    .then((alunos_model) => {
+    .then((aluno) => {
       res.json({
-        alunos_model,
+        aluno,
       });
     })
     .catch((err) => internalServerError(res, err));
 };
 
+const deleteAll = (_req: Request, res: Response) => {
+  return accessDenied(res, "Acesso Negado!");
+};
+
+const atualizaAll = (_req: Request, res: Response) => {
+  return accessDenied(res, "Acesso Negado!");
+};
+
+const insereUmAlunos = (_req: Request, res: Response) => {
+  return accessDenied(res, "Acesso Negado!");
+};
+
 export const alunoController = {
   insereAlunos,
   listaAlunos,
-  //getAluno,
+  getAluno,
   deletaAluno,
   atualizaAluno,
+  deleteAll,
+  atualizaAll,
+  insereUmAlunos,
 };
