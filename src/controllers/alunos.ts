@@ -44,6 +44,16 @@ const listaAlunos = (_req: Request, res: Response) => {
     .catch((err) => internalServerError(res, err));
 };
 
+//Lista todos os alunos com nome especifico
+const listaAlunosNome = (req: Request, res: Response) => {
+  alunoModel
+    .listaAlunosNome(req.params.nome)
+    .then((alunos) => {
+      res.json(alunos);
+    })
+    .catch((err) => internalServerError(res, err));
+};
+
 //Retorna um aluno específico
 const getAluno = (req: Request, res: Response) => {
   const id = parseInt(req.params.id);
@@ -137,4 +147,5 @@ export const alunoController = {
   deleteAll,
   atualizaAll,
   insereUmAlunos,
+  listaAlunosNome,
 };
