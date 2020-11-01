@@ -46,10 +46,15 @@ const listaAlunos = (_req: Request, res: Response) => {
 
 //Lista todos os alunos com nome especifico
 const listaAlunosNome = (req: Request, res: Response) => {
-  alunoModel
+  return alunoModel
     .listaAlunosNome(req.params.nome)
-    .then((alunos) => {
-      res.json(alunos);
+    .then((aluno) => {
+      if (aluno) {
+        ok(res);
+        return res.json(aluno);
+      } else {
+        return notFound(res, "Usuário não existe!");
+      }
     })
     .catch((err) => internalServerError(res, err));
 };

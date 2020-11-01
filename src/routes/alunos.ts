@@ -6,11 +6,11 @@ const rotaAluno = Router();
 //Retorna todos os alunos
 rotaAluno.get("/", alunoController.listaAlunos);
 
-//Retorna todos os alunos
-rotaAluno.get("/:nome", alunoController.listaAlunosNome);
-
 //Insere um aluno
 rotaAluno.post("/", alunoController.insereAlunos);
+
+//Retorna todos os alunos
+rotaAluno.get("/:nome", alunoController.listaAlunosNome);
 
 //Retorna um aluno
 rotaAluno.get("/:id", alunoController.getAluno);
