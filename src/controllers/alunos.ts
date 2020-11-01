@@ -10,6 +10,7 @@ import {
 import { alunoModel, Alunos } from "../models/aluno";
 import { ok } from "assert";
 
+//Método respinsável por inserção de novos alunos
 const insereAlunos = (req: Request, res: Response) => {
   {
     const aluno = req.body;
@@ -82,6 +83,7 @@ const deletaAluno = async (req: Request, res: Response) => {
     .catch((err) => internalServerError(res, err));
 };
 
+//Atualiza os dados de um determinado aluno
 const atualizaAluno = async (req: Request, res: Response) => {
   const id = parseInt(req.params.id);
   {
@@ -111,14 +113,17 @@ const atualizaAluno = async (req: Request, res: Response) => {
     .catch((err) => internalServerError(res, err));
 };
 
+//Faz a tentativa de deletar todos os alunos
 const deleteAll = (_req: Request, res: Response) => {
   return accessDenied(res, "Acesso Negado!");
 };
 
+//Faz a tentativa de atualizar todos os alunos
 const atualizaAll = (_req: Request, res: Response) => {
   return accessDenied(res, "Acesso Negado!");
 };
 
+//Faz a tentativa de inserir um aluno com id de possível escolha
 const insereUmAlunos = (_req: Request, res: Response) => {
   return accessDenied(res, "Acesso Negado!");
 };

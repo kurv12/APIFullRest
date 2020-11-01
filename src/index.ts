@@ -12,4 +12,5 @@ const app = express();
 app.use(bodyParser.json());
 useRoutes(app);
 
+//Informa a porta e seestá ativo
 app.listen(PORT, () => console.log("Servidor ativo na porta " + PORT));
